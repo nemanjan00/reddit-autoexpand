@@ -5,7 +5,20 @@
 // @downloadURL https://raw.githubusercontent.com/nemanjan00/reddit-autoexpand/master/reddit-autoexpand.user.js
 // @namespace https://github.com/nemanjan00/reddit-autoexpand
 // @updateURL https://raw.githubusercontent.com/nemanjan00/reddit-autoexpand/master/reddit-autoexpand.user.js
-// @version 1
+// @version 2
 // ==/UserScript==
 
-[].forEach.call(document.getElementsByClassName("expando-button"), (b => b.click()));
+window.elements = Array.from(document.getElementsByClassName("expando-button")).reverse();
+
+if(!window.timer){
+	window.timer = setInterval(function(){
+		if(window.elements.length > 0){
+			let element = window.elements.pop();
+
+			element.click();
+		} else {
+			clearInterval(window.timer);
+			window.timer = undefined;
+		}
+	}, 500);
+};
